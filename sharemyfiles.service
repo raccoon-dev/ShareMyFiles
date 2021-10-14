@@ -1,0 +1,21 @@
+[Unit]
+Description = ShareMyFiles
+After = network.target
+
+[Service]
+Type = simple
+ExecStart = /usr/bin/node /opt/sharemyfiles/index.js
+#ExecStop = /usr/bin/node /opt/sharemyfiles/index.js stop
+#Restart = on-failure
+Restart = always
+SyslogIdentifier = ShareMyFiles
+RestartSec = 5
+TimeoutStartSec = infinity
+#User=user
+#Group=group
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/opt/sharemyfiles
+
+[Install]
+WantedBy = multi-user.target

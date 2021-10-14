@@ -1,0 +1,112 @@
+<%- include('header') %>
+<%- include('navbar') %>
+<main class="container">
+  <div class="bg-dark text-light p-5 rounded shadow-lg">
+    <h1 class="text-warning"><i class="bi bi-cloud-upload-fill"></i> Upload Files</h1>
+    <hr>
+    <p>
+      Uploader ID: <a href="<%= uploaderIdLink %>" class="link-warning" id="linkUploaderId"><%= uploaderId %></a>
+      <a onclick="textCopy('linkUploaderId')" href="javascript:void(0);" class="link-info"><i class="bi bi-clipboard-check"></i></a>
+    </p>
+    <p>
+      Valid until: <span class="text-warning"><%= uploaderValid %></span>
+    </p>
+
+    <div>
+      <hr>
+      <h2 class="lead text-warning">Upload file</h2>
+      <form class="row g-3" name="create_new_uploader" method="POST" action="<%= frm.address %>"  enctype="multipart/form-data">
+        <div class="mb-3 form-outline">
+          <label for="selValid" class="form-label">Valid by:</label>
+          <select id="selValid" name="selValid" class="form-select bg-dark text-light" aria-label="Valid by...">
+            <option value="1">1 [h]</option>
+            <option value="2">2 [h]</option>
+            <option value="6">6 [h]</option>
+            <option value="12">12 [h]</option>
+            <option selected value="24">24 [h]</option>
+            <option value="48">2 [days]</option>
+            <option value="72">3 [days]</option>
+            <option value="120">5 [days]</option>
+            <option value="168">7 [days]</option>
+            <option value="336">14 [days]</option>
+            <option value="720">30 [days]</option>
+            <option value="1440">2 [months]</option>
+            <option value="2190">3 [months]</option>
+            <option value="4380">6 [months]</option>
+            <option value="8760">1 [year]</option>
+          </select>
+        </div>
+
+        <div class="mb-3 form-outline">
+          <label for="edtAllowDnw" class="form-label">Allowed downloads:</label>
+          <input type="number" name="edtAllowDnw" class="form-control bg-dark text-light" id="edtAllowDwn" placeholder="Allowed downloads..." value="99">
+        </div>
+
+        <div class="mb-3 form-outline">
+          <label for="edtFile" class="form-label">Upload file:</label>
+          <input type="file" name="edtFile" class="form-control bg-dark text-light" id="edtFile" placeholder="Choose file to upload...">
+        </div>
+
+        <div class="mb-3 d-grid gap-2">
+          <input type="button" id="btnSend" value="Upload file" class="btn btn-outline-warning btn-lg btn-dark" onClick="uploadFile('<%= uploaderId %>')">
+        </div>
+
+      </form>
+      <div>
+        <section class="progress-area"></section>
+      </div>
+      <div>
+        <section class="uploaded-area"></section>
+      </div>
+    </div>
+
+    <% if (frm.hasOwnProperty('isOk')) { %>
+    <div class="alert alert-<%= frm.isOk ? 'success' : 'danger' %> alert-dismissible fade show" role="alert">
+      <% if (frm.isOk) { %>
+      <i class="bi bi-info-circle-fill"></i>
+      <% } else { %>
+      <i class="bi bi-exclamation-circle-fill"></i>
+      <% } %>
+      <%= frm.message %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <% } %>
+
+    <div>
+      <hr>
+      <h2 class="lead text-success">Available files:</h2>
+      <table class="table table-hover table-dark">
+        <thead>
+          <tr>
+            <th scope="col" class="text-success">#</th>
+            <th scope="col" class="text-success">Generated</th>
+            <th scope="col" class="text-success">Valid</th>
+            <th scope="col" class="text-success">Name</th>
+            <th scope="col" class="text-success">Downl.</th>
+            <th scope="col" class="text-success">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% files.forEach((el) => { %>
+          <tr>
+            <th scope="row"><%= el.row_num %></th>
+            <td><%= el.dt_create_l %></td>
+            <td><%= el.dt_valid %></td>
+            <td>
+              <a href="javascript:void(0);" onClick="downloadFile('/f/<%= el.link %>')" class="link-primary"><i class="bi bi-cloud-download"></i></a>
+              <a href="/d/<%= el.link %>" class="text-success" id="flLink<%= el.row_num %>"><%= el.name %></a>
+              <a onclick="textCopy('flLink<%= el.row_num %>')" href="javascript:void(0);" class="link-info"><i class="bi bi-clipboard-check"></i></a>
+            </td>
+            <td>
+              <%= el.dwn_ctr %><% if(el.valid_dwn > 0) {%>/<%= el.valid_dwn %><% }%>
+            </td>
+            <td><a href="javascript:void(0);" onclick="delFile('/del/<%= uploaderId %>/<%= el.link %>')" class="link-danger"><i class="bi bi-trash"></i></a></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
+<%- include('footer') %>

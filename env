@@ -1,0 +1,25 @@
+# Default env file. Change variables you need
+# and change this file name to ".env".
+
+# HTTP port
+PORT=3000
+
+# Temporary folder to upload files
+FOLDER_TEMP=c:\tmp\
+
+# Destination folder for uploaded files
+FOLDER_UPLOAD=c:\uploads\
+
+# Administrator URI
+PATH_ADMIN=/admin
+
+# Secret text for SHA calculation
+SHA_SECRET=TopSecretTextForSHA
+
+# Full path to log file
+LOG_PATH=c:\tmp\sharemyfiles.log
+
+# Log level. Possible values: error, warn, info, verbose, debug, silly.
+LOG_LEVEL=info
+
+#NODE_ENV=production

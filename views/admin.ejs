@@ -1,0 +1,139 @@
+<%- include('header') %>
+<%- include('navbar') %>
+<main class="container">
+  <div class="bg-dark text-light p-5 rounded shadow-lg">
+    <h1 class="text-danger"><i class="bi bi-gear"></i> Administration View</h1>
+    <hr>
+    <p>
+      Admin ID: <a href="<%= adminIdLink %>" class="link-danger" id="linkAdminId"><%= adminId %></a>
+      <a onclick="textCopy('linkAdminId')" href="javascript:void(0);" class="link-info"><i class="bi bi-clipboard-check"></i></a>
+    </p>
+
+    <div>
+      <hr>
+      <h2 class="lead text-danger">Generate new uploader links</h2>
+      <form class="row g-3" name="create_new_uploader" method="POST" action="<%= frm.address %>">
+        <div class="mb-3 form-outline">
+          <label for="selValid" class="form-label">Valid by:</label>
+          <select id="selValid" name="selValid" class="form-select bg-dark text-light" aria-label="Valid by...">
+            <option value="1">1 [h]</option>
+            <option value="2">2 [h]</option>
+            <option value="6">6 [h]</option>
+            <option value="12">12 [h]</option>
+            <option selected value="24">24 [h]</option>
+            <option value="48">2 [days]</option>
+            <option value="72">3 [days]</option>
+            <option value="120">5 [days]</option>
+            <option value="168">7 [days]</option>
+            <option value="336">14 [days]</option>
+            <option value="720">30 [days]</option>
+            <option value="1440">2 [months]</option>
+            <option value="2190">3 [months]</option>
+            <option value="4380">6 [months]</option>
+            <option value="8760">1 [year]</option>
+          </select>
+        </div>
+
+        <div class="mb-3 form-outline">
+          <label for="edtComment" class="form-label">Comment:</label>
+          <input type="text" name="edtComment" class="form-control bg-dark text-light" id="edtComment" placeholder="Comment...">
+        </div>
+
+        <div class="mb-3 d-grid gap-2">
+          <input type="submit" id="btnSend" value="Create new uploader link" class="btn btn-outline-danger btn-lg btn-dark">
+        </div>
+
+      </form>
+    </div>
+
+    <% if (frm.hasOwnProperty('isOk')) { %>
+    <div class="alert alert-<%= frm.isOk ? 'success' : 'danger' %> alert-dismissible fade show" role="alert" id="alert">
+      <% if (frm.isOk) { %>
+      <i class="bi bi-info-circle-fill"></i>
+      <% } else { %>
+      <i class="bi bi-exclamation-circle-fill"></i>
+      <% } %>
+      <%= frm.message %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <% } %>
+
+    <div>
+      <hr>
+      <h2 class="lead text-warning">Available uploaders:</h2>
+      <table class="table table-hover table-dark">
+        <thead>
+          <tr>
+            <th scope="col" class="text-warning">#</th>
+            <th scope="col" class="text-warning">Generated</th>
+            <th scope="col" class="text-warning">Valid</th>
+            <th scope="col" class="text-warning">Identifier</th>
+            <th scope="col" class="text-warning">Comment</th>
+            <th scope="col" class="text-warning">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% uploaders.forEach((el) => { %>
+          <tr>
+            <th scope="row"><%= el.row_num %></th>
+            <td><%= el.dt_create_l %></td>
+            <td><%= el.dt_valid %></td>
+            <td>
+              <a href="/u/<%= el.link %>" class="text-warning" id="upLink<%= el.row_num %>"><%= el.link %></a>
+              <a onclick="textCopy('upLink<%= el.row_num %>')" href="javascript:void(0);" class="link-info"><i class="bi bi-clipboard-check"></i></a>
+            </td>
+            <td><%= el.comment %></td>
+            <td><a href="javascript:void(0);" onclick="delFile('/del/<%= adminId %>/<%= el.link %>')" class="link-danger"><i class="bi bi-trash"></i></a></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <hr>
+      <h2 class="lead text-success">Available files:</h2>
+      <table class="table table-hover table-dark">
+        <thead>
+          <tr>
+            <th scope="col" class="text-success">#</th>
+            <th scope="col" class="text-success">Generated</th>
+            <th scope="col" class="text-success">Valid</th>
+            <th scope="col" class="text-success">Name</th>
+            <th scope="col" class="text-success">Created by</th>
+            <th scope="col" class="text-success">Downl.</th>
+            <th scope="col" class="text-success">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% files.forEach((el) => { %>
+          <tr>
+            <th scope="row"><%= el.row_num %></th>
+            <td><%= el.dt_create_l %></td>
+            <td><%= el.dt_valid %></td>
+            <td>
+              <a href="javascript:void(0);" onClick="downloadFile('/f/<%= el.link %>')" class="link-primary"><i class="bi bi-cloud-download"></i></a>
+              <a href="/d/<%= el.link %>" class="text-success" id="flLink<%= el.row_num %>"><%= el.name %></a>
+              <a onclick="textCopy('flLink<%= el.row_num %>')" href="javascript:void(0);" class="link-info"><i class="bi bi-clipboard-check"></i></a>
+            </td>
+            <td>
+              <% if(el.upl_exists === 'Y') { %>
+              <a href="/u/<%= el.upl_link %>" class="text-warning" id="dwnDwnLink<%= el.row_num %>"><%= el.upl_link %></a>
+              <a onclick="textCopy('dwnDwnLink<%= el.row_num %>')" href="javascript:void(0);" class="link-info"><i class="bi bi-clipboard-check"></i></a>
+              <% } else { %>
+              <%= el.upl_link %>
+              <% } %>
+            </td>
+            <td>
+              <%= el.dwn_ctr %><% if(el.valid_dwn > 0) {%>/<%= el.valid_dwn %><% }%>
+            </td>
+            <td><a href="javascript:void(0);" onclick="delFile('/del/<%= adminId %>/<%= el.link %>')" class="link-danger"><i class="bi bi-trash"></i></a></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
+<%- include('footer') %>

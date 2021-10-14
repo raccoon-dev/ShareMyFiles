@@ -1,0 +1,34 @@
+<%- include('header') %>
+<%- include('navbar') %>
+<main class="container">
+  <div class="bg-dark text-light p-5 rounded shadow-lg">
+    <h1 class="text-success"><i class="bi bi-cloud-download-fill"></i> Download File</h1>
+    <hr>
+    <h3>
+      File name: <span class="text-success"><%= fileName %></span>
+    </h3>
+    <p>
+      File ID: <a href="<%= fileIdLink %>" class="link-success" id="linkFileId"><%= fileId %></a>
+      <a onclick="textCopy('linkFileId')" href="javascript:void(0);" class="link-info"><i class="bi bi-clipboard-check"></i></a>
+    </p>
+    <p>
+      Direct download: <a href="<%= fileIdLinkDirect %>" class="link-success" id="linkFileIdDirect"><%= fileIdLinkDirect %></a>
+      <a onclick="textCopy('linkFileIdDirect')" href="javascript:void(0);" class="link-info"><i class="bi bi-clipboard-check"></i></a>
+    </p>
+    <p>
+      File size: <span class="text-success"><%= fileSize %></span>
+    </p>
+    <p>
+      Valid until: <span class="text-success"><%= fileValid %></span>
+    </p>
+    <p>
+      Downloads left: <span class="text-success"><%= fileValidLeft %></span>
+    </p>
+
+    <div class="mb-3 d-grid gap-2">
+      <button type="button" onclick="downloadFile('<%= fileIdLinkDirect %>')" id="btnDownload" class="btn btn-outline-success btn-lg btn-dark">Download file</button>
+    </div>
+
+  </div>
+</main>
+<%- include('footer') %>
