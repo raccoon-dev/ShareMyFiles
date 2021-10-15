@@ -18,15 +18,15 @@ Every files can be downloaded limited number of times. Uploader user can set up 
 
 ## Installation
 
- 1. Install [node.js](https://nodejs.org/)
- 2. Clone repository
- 3. npm update
- 4. Copy file "env" to ".env" and edit it.
- 5. Copy file "db/database.clean.db" to "db/database.db" or create that database from "db/database.sql" file.
- 6. Copy file "db/master_keys.json.example" to "db/master_keys.json". Edit "key" value from file. This value must start with lowercase letter "a" and contain random string.
- 7. Run application:
-  * npm run dev - for development environment - use nodemon to automatically restart application after changes in source code.
-  * npm start - for production environment (node index is also ok).
+  1. Install [node.js](https://nodejs.org/)
+  2. Clone repository
+  3. npm update
+  4. Copy file "env" to ".env" and edit it.
+  5. Copy file "db/database.clean.db" to "db/database.db" or create that database from "db/database.sql" file.
+  6. Copy file "db/master_keys.json.example" to "db/master_keys.json". Edit "key" value from file. This value must start with lowercase letter "a" and contain random string.
+  7. Run application:
+    * npm run dev - for development environment - use nodemon to automatically restart application after changes in source code.
+    * npm start - for production environment (node index is also ok).
 
 ## Daemonize (Linux)
 
@@ -75,3 +75,5 @@ Uncomment NODE_ENV=production from .env file to set up production environment. T
 
  * Send link to email
  * Add more logs
+ * Fix reload page after upload
+ * Change upload to websockets
